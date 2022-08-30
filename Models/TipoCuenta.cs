@@ -14,4 +14,16 @@ public class TipoCuenta
     public string Nombre { get; set; }
     public int UsuarioId { get; set; }
     public int Orden { get; set; }
+    
+    /* Pruebas de otras validaciones por defecro*/
+    [Required(ErrorMessage = "El campo {0} es requerido")]
+    [EmailAddress(ErrorMessage = "El campo debe ser un correo electronico válido")]
+    public string Email { get; set; }
+    [Range(minimum:18, maximum:130, ErrorMessage = "El valor debe estar entre {1} y {2}")]
+    public int Edad { get; set; }
+    [Url(ErrorMessage = "El campo deber ser una URL válida")]
+    public string URL { get; set; }
+    [CreditCard(ErrorMessage = "La tarjeta de crédito no es valida")]
+    [Display(Name = "Tarjeta De Crédito")]
+    public string TarjetaDeCredito { get; set; }
 }
