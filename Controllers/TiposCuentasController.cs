@@ -14,6 +14,11 @@ public class TiposCuentasController: Controller
     [HttpPost]
     public IActionResult Crear(TipoCuenta tipoCuenta)
     {
+        // si el modelo es invalido entra hay 
+        if (!ModelState.IsValid)
+        {
+            return View(tipoCuenta);
+        }
         return View();
     }
 }
