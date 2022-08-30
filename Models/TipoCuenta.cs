@@ -3,18 +3,18 @@ using ManejoProsupuesto.Validaciones;
 
 namespace ManejoProsupuesto.Models;
 
-public class TipoCuenta: IValidatableObject
+public class TipoCuenta//:IValidatableObject
 {
     public int Id { get; set; }
     // {0} hace referencia al campo actual en la vista
     // con display podemos colocar el nombre del label 
     [Required (ErrorMessage = "EL campo {0} es requerido")]
-    //[PrimeraLetraMayuscula]
+    [PrimeraLetraMayuscula]
     public string Nombre { get; set; }
     public int UsuarioId { get; set; }
     public int Orden { get; set; }
     
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    /*public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         if (Nombre != null && Nombre.Length > 0)
         {
@@ -28,5 +28,5 @@ public class TipoCuenta: IValidatableObject
 
             }
         }
-    }
+    }*/
 }
