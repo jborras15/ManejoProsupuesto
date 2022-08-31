@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using ManejoProsupuesto.Validaciones;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ManejoProsupuesto.Models;
 
@@ -10,6 +11,7 @@ public class TipoCuenta//:IValidatableObject
     // con display podemos colocar el nombre del label 
     [Required (ErrorMessage = "EL campo {0} es requerido")]
     [PrimeraLetraMayuscula]
+    [Remote(action:"VerificarExisteTipoCuenta", controller:"TiposCuentas")]
     public string Nombre { get; set; }
     public int UsuarioId { get; set; }
     public int Orden { get; set; }

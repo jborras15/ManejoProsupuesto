@@ -37,10 +37,25 @@ public class TiposCuentasController: Controller
         {
             // nameOf indicamos el campo que lanzara  el error 
             ModelState.AddModelError(nameof(tipoCuenta.Nombre),
-                $"El nombre {tipoCuenta.Nombre} ya existe");
+                $"El nombre {tipoCuenta.Nombre} ya existee");
             return View(tipoCuenta);
         }
         await _repositorioTipoCuenta.Crear(tipoCuenta);
         return View();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> VerificarExisteTipoCuenta(string nombre)
+    {
+        var usuarioId = 4;
+        var yaExisteTipoCuenta = await _repositorioTipoCuenta.Existe(nombre, usuarioId);
+    
+        if (yaExisteTipoCuenta)
+        {
+            // indica el mensaje que se mostrara
+            return Json($"El nombre {nombre} ya existe");
+        }
+    
+        return Json(true);
     }
 }
