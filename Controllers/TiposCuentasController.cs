@@ -29,6 +29,17 @@ public class TiposCuentasController: Controller
         // le decimos que use el usuario 4 de la tabla 
         // usuario fue creado directamente en la base de datos
         tipoCuenta.UsuarioId = 4;
+
+        
+        var yaExisteTipoCuenta = await _repositorioTipoCuenta.Existe(tipoCuenta.Nombre, tipoCuenta.UsuarioId);
+
+        if (yaExisteTipoCuenta)
+        {
+            // nameOf indicamos el campo que lanzara  el error 
+            ModelState.AddModelError(nameof(tipoCuenta.Nombre),
+                $"El nombre {tipoCuenta.Nombre} ya existe");
+            return View(tipoCuenta);
+        }
         await _repositorioTipoCuenta.Crear(tipoCuenta);
         return View();
     }
