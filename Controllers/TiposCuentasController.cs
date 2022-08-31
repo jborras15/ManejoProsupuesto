@@ -14,12 +14,12 @@ public class TiposCuentasController: Controller
     }
 
     public IActionResult Crear()
-    {
+    { 
         return View();
     }
 
     [HttpPost]
-    public IActionResult Crear(TipoCuenta tipoCuenta)
+    public async Task<IActionResult>Crear(TipoCuenta tipoCuenta)
     {
         // si el modelo es invalido entra hay 
         if (!ModelState.IsValid)
@@ -29,7 +29,7 @@ public class TiposCuentasController: Controller
         // le decimos que use el usuario 4 de la tabla 
         // usuario fue creado directamente en la base de datos
         tipoCuenta.UsuarioId = 4;
-        _repositorioTipoCuenta.Crear(tipoCuenta);
+        await _repositorioTipoCuenta.Crear(tipoCuenta);
         return View();
     }
 }
