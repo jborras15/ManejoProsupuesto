@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using ManejoProsupuesto.Models;
 using ManejoProsupuesto.Servicios;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,36 @@ public class TiposCuentasController: Controller
             return View(tipoCuenta);
         }
         await _repositorioTipoCuenta.Crear(tipoCuenta);
-        return Redirect("Index");
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> Editar(int id )
+    {
+        var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
+        var tipoCuenta = await _repositorioTipoCuenta.ObtenerPorId(id, usuarioId);
+
+        if (tipoCuenta is null)
+        {
+            return RedirectToAction("NoEncontrado", "Home");
+        }
+
+        return View(tipoCuenta);
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult> Editar(TipoCuenta tipoCuenta )
+    {
+        var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
+        var tipoCuentaExiste = await _repositorioTipoCuenta.ObtenerPorId(tipoCuenta.Id, usuarioId);
+
+        if (tipoCuentaExiste is null)
+        {
+            return RedirectToAction("NoEncontrado", "Home");
+        }
+
+        await _repositorioTipoCuenta.Actualizar(tipoCuenta);
+        return RedirectToAction("Index");
     }
 
     [HttpGet]
@@ -64,7 +94,6 @@ public class TiposCuentasController: Controller
             // indica el mensaje que se mostrara
             return Json($"El nombre {nombre} ya existe");
         }
-    
         return Json(true);
     }
 }
