@@ -13,6 +13,13 @@ public class TiposCuentasController: Controller
         _repositorioTipoCuenta = repositorioTipoCuenta;
     }
 
+    public async Task<IActionResult> Index()
+    {
+        var usuarioId = 4;
+        var tiposCuentas = await _repositorioTipoCuenta.Obtener(usuarioId);
+        return View(tiposCuentas);
+    }
+
     public IActionResult Crear()
     { 
         return View();
@@ -41,7 +48,7 @@ public class TiposCuentasController: Controller
             return View(tipoCuenta);
         }
         await _repositorioTipoCuenta.Crear(tipoCuenta);
-        return View();
+        return Redirect("Index");
     }
 
     [HttpGet]

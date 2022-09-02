@@ -8,6 +8,7 @@ public interface IRepositorioTipoCuenta
 {
     Task Crear(TipoCuenta tipoCuenta);
     Task<bool> Existe(string nombre, int usuarioId);
+    Task<IEnumerable<TipoCuenta>> Obtener(int usuarioId);
 }
 
 public class RepositorioTipoCuenta: IRepositorioTipoCuenta
@@ -34,11 +35,23 @@ public class RepositorioTipoCuenta: IRepositorioTipoCuenta
     public async Task<bool> Existe(string nombre, int usuarioId)
     {
         using var connection = new SqlConnection(connectionString);
+        // QueryFirstOrDefaultAsync sirve para traer el primer elemento o regresar el valor por defecto en este caso, 
+        // el valor por defecto de int que es 0 
+        
          var existe = await connection.QueryFirstOrDefaultAsync<int>(
                                         @"Select 1 
                                             from ManejoPresupuesto.TiposCuentas 
                                             where [Nombre ] = @Nombre AND UsuarioId = @UsuarioId",
                                         new {nombre, usuarioId});
          return existe == 1;
+    }
+
+    public async Task<IEnumerable<TipoCuenta>> Obtener(int usuarioId)
+    {
+        using var connection = new SqlConnection(connectionString);
+        // QueryAsync para indicarle un query 
+        return await connection.QueryAsync<TipoCuenta>(@"SELECT Id, [Nombre], Orden 
+                                                            From ManejoPresupuesto.TiposCuentas  where UsuarioId = @UsuarioId",
+            new { usuarioId });
     }
 }
