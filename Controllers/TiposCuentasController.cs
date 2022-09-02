@@ -7,15 +7,17 @@ namespace ManejoProsupuesto.Controllers;
 public class TiposCuentasController: Controller
 {
     private readonly IRepositorioTipoCuenta _repositorioTipoCuenta;
+    private readonly IServicioUsuarios _servicioUsuarios;
 
-    public TiposCuentasController(IRepositorioTipoCuenta repositorioTipoCuenta)
+    public TiposCuentasController(IRepositorioTipoCuenta repositorioTipoCuenta, IServicioUsuarios servicioUsuarios)
     {
         _repositorioTipoCuenta = repositorioTipoCuenta;
+        _servicioUsuarios = servicioUsuarios;
     }
 
     public async Task<IActionResult> Index()
     {
-        var usuarioId = 4;
+        var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
         var tiposCuentas = await _repositorioTipoCuenta.Obtener(usuarioId);
         return View(tiposCuentas);
     }
@@ -35,7 +37,7 @@ public class TiposCuentasController: Controller
         }
         // le decimos que use el usuario 4 de la tabla 
         // usuario fue creado directamente en la base de datos
-        tipoCuenta.UsuarioId = 4;
+        tipoCuenta.UsuarioId = _servicioUsuarios.ObtenerUsuarioId();
 
         
         var yaExisteTipoCuenta = await _repositorioTipoCuenta.Existe(tipoCuenta.Nombre, tipoCuenta.UsuarioId);
@@ -54,7 +56,7 @@ public class TiposCuentasController: Controller
     [HttpGet]
     public async Task<IActionResult> VerificarExisteTipoCuenta(string nombre)
     {
-        var usuarioId = 4;
+        var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
         var yaExisteTipoCuenta = await _repositorioTipoCuenta.Existe(nombre, usuarioId);
     
         if (yaExisteTipoCuenta)
