@@ -13,6 +13,7 @@ public interface IRepositorioTipoCuenta
     Task<IEnumerable<TipoCuenta>> Obtener(int usuarioId);
     Task<TipoCuenta> ObtenerPorId(int id, int usuarioId);
     Task Actualizar(TipoCuenta tipoCuenta);
+    Task Borrar(int id);
 }
 
 public class RepositorioTipoCuenta: IRepositorioTipoCuenta
@@ -77,5 +78,13 @@ public class RepositorioTipoCuenta: IRepositorioTipoCuenta
                                                                             FROM  ManejoPresupuesto.TiposCuentas 
                                                                             where Id = @Id AND UsuarioId=@UsuarioId
                                                             ",new { id, usuarioId });
+    }
+
+
+    public async Task Borrar(int id)
+    {
+        using var connection = new SqlConnection(connectionString);
+        // ExecuteAsync nos permite hacer un squery sin que retorne nada
+        await connection.ExecuteAsync("Delete ManejoPresupuesto.TiposCuentas where Id=@Id", new { id });
     }
 }
