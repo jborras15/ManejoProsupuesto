@@ -16,7 +16,7 @@
         <th>Nombre</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="reOrdenable">
     @foreach (var tipoCuentas in Model)
     {
         <tr>
@@ -31,3 +31,12 @@
     }
     </tbody>
 </table>
+<!-- usamos el jquery-ui , y le aplicamossu metodo de sortable  al id-->
+@section Scripts
+{
+    <script >
+    $(function() {
+      $("#reOrdenable").sortable();
+    })
+    </script>
+}
